@@ -9,7 +9,6 @@ import 'nprogress/nprogress.css';
 let getRouter: any; // 用来获取后台拿到的路由
 
 router.beforeEach((to: Route, from: Route, next: any) => {
-    debugger
     NProgress.start();
     if (getToken()) { // 有token
         if (to.path === '/login') {
