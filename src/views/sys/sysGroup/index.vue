@@ -2,90 +2,102 @@
     <el-container>
         <el-header ref="tb_header">
             <el-form ref="searcheForm" :model="searcheForm" class="demo-form-inline el-form--inline">
-                <el-form-item label="活动名称">
-                    <el-input v-model="searcheFormname"></el-input>
+                <el-form-item label="名称">
+                    <el-input v-model="searcheForm.GroupName"></el-input>
                 </el-form-item>
-                <el-form-item label="活动区域">
-                    <el-select v-model="searcheFormregion" placeholder="请选择活动区域">
-                        <el-option label="区域一" value="shanghai"></el-option>
-                        <el-option label="区域二" value="beijing"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="活动时间">
-                    <el-col :span="11">
-                        <el-date-picker type="date" placeholder="选择日期" v-model="searcheFormdate1" style="width: 100%;"></el-date-picker>
-                    </el-col>
-                    <el-col class="line" :span="2">-</el-col>
-                    <el-col :span="11">
-                        <el-time-picker placeholder="选择时间" v-model="searcheFormdate2" style="width: 100%;"></el-time-picker>
-                    </el-col>
-                </el-form-item>
-                <el-form-item label="即时配送">
-                    <el-switch v-model="searcheFormdelivery"></el-switch>
-                </el-form-item>
-                <el-form-item label="活动性质">
-                    <el-checkbox-group v-model="searcheFormtype">
-                        <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
-                        <el-checkbox label="地推活动" name="type"></el-checkbox>
-                        <el-checkbox label="线下主题活动" name="type"></el-checkbox>
-                        <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
-                    </el-checkbox-group>
-                </el-form-item>
-                <el-form-item label="特殊资源">
-                    <el-radio-group v-model="searcheFormresource">
-                        <el-radio label="线上品牌商赞助"></el-radio>
-                        <el-radio label="线下场地免费"></el-radio>
-                    </el-radio-group>
+                <el-form-item label="备注">
+                    <el-input v-model="searcheForm.Remark"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="onSubmit">立即创建</el-button>
-                    <el-button>取消</el-button>
+                    <el-button type="primary" icon="el-icon-search" size="small" @click="handleSearchFormSubmit">
+                        查询
+                    </el-button>
+                </el-form-item>
+                <el-form-item>
+                    <el-button icon="el-icon-refresh" size="small" @click="handleSearchFormReset">
+                        重置
+                    </el-button>
                 </el-form-item>
             </el-form>
         </el-header>
         <el-main ref="tb_main" :style="{height:tbMainHeight}">
             <el-table :data="tableData" ref="mytable" :max-height="tableHeight">
-                <el-table-column prop="date" label="日期" width="140">
+                <el-table-column label="名称" prop="GroupName" sortable="custom">
+                    <template slot-scope="scope">
+                        {{scope.row.GroupName}}
+                    </template>
                 </el-table-column>
-                <el-table-column prop="name" label="姓名" width="120">
+
+                <el-table-column label="备注" prop="Remark" sortable="custom" :show-overflow-tooltip="true">
+                    <template slot-scope="scope">
+                        {{scope.row.Remark}}
+                    </template>
                 </el-table-column>
-                <el-table-column prop="address" label="地址">
+
+                <el-table-column label="创建人" prop="CreatedUserName" :show-overflow-tooltip="true">
+
+                    <template slot-scope="scope">
+                        {{scope.row.CreatedUserName}}
+                    </template>
+                </el-table-column>
+                <el-table-column label="创建时间" prop="ContractPhone" :show-overflow-tooltip="true">
+
+                    <template slot-scope="scope">
+                        {{scope.row.CreatedAt}}
+                    </template>
+                </el-table-column>
+                <el-table-column label="修改人" prop="UpdatedUserName" :show-overflow-tooltip="true">
+
+                    <template slot-scope="scope">
+                        {{scope.row.UpdatedUserName}}
+                    </template>
+                </el-table-column>
+                <el-table-column label="修改时间" prop="UpdatedAt" :show-overflow-tooltip="true">
+
+                    <template slot-scope="scope">
+                        {{scope.row.UpdatedAt}}
+                    </template>
                 </el-table-column>
             </el-table>
 
         </el-main>
         <el-footer ref="tb_footer">
-            <el-pagination @size-change="handleSizeChange"
-                           @current-change="handleCurrentChange"
-                           :current-page="currentPage4"
-                           :page-sizes="[100, 200, 300, 400]"
-                           :page-size="100"
+            <el-pagination :current-page="page.current"
+                           :page-size="page.size"
+                           :total="page.total"
+                           :page-sizes="page.pagesizes"
                            layout="total, sizes, prev, pager, next, jumper"
-                           :total="400">
-            </el-pagination>
+                           @size-change="handleSizeChange"
+                           @current-change="handleCurrentChange"></el-pagination>
         </el-footer>
 
     </el-container>
 </template>
 <script lang="ts">
     import { Component, Vue } from 'vue-property-decorator';
-
+    import * as sysgroupService from '@/services/Sys/sysgroupService';
     @Component
     export default class Table extends Vue {
         // 查询条件
         public searcheForm: any = {
-            name: '',
-            region: '',
-            date1: '',
-            date2: '',
-            delivery: false,
-            type: [],
-            resource: '',
-            desc: ''
+            GroupName: '',
+            Remark: '',
         }
         // 表格数据
         public tableData: any = [];
-
+        //表格分页信息
+        public page: any = {
+            pagesizes: [30, 100, 200, 400],
+            current: 1,
+            size: 30,
+            total: 0,
+            IsPage: true
+        }
+        //表格分页排序信息
+        public sort: any = {
+            prop: "",
+            order: "descending"
+        }
         // 页面主页高
         public tbMainHeight: string = '800px';
 
@@ -96,39 +108,64 @@
         get pageHeight() {
             return document.body.offsetHeight;
         }
-        //  分页信息
         private handleSizeChange(val: number): void {
-            console.log(`每页 ${val} 条`);
+            this.page.size = val;
+            this.getTableData();
+        }
+        private handleCurrentChange(val: number): void {
+            this.page.current = val;
+            this.getTableData();
+        }
+        protected getTableData(): void {
+            sysgroupService.getSysGroupPage(this.PageQuery()).then((data: any) => {
+                this.tableData = data.rows;
+                this.page.total = data.total;
+            })
+        }
+        private handleSearchFormSubmit(): void{
+            this.page.current = 1;
+            this.getTableData();
+        }
+        private handleSearchFormReset(): void{
+            const refName = this.$refs.searcheForm as HTMLFormElement;
+            if (refName) {
+                refName.resetFields();
+            }
+            this.handleSearchFormSubmit();
         }
 
-        private handleCurrentChange(val: number): void {
-            console.log(`当前页: ${val}`);
+        //获取查询条件
+        private PageQuery(): any {
+            let query = {
+                PageIndex: this.page.current, //当前页码
+                PageSize: this.page.size, //显示行数
+                OrderBy: this.sort.prop, //排序字段
+                IsDesc: this.sort.order === "descending", //是否降序
+                IsPage: this.sort.IsPage,
+                Filter: {}
+
+            };
+            if (this.searcheForm) {
+                //query["Filter"] = this.$myFreeze(this.searchForm) //自定义查询
+                query.Filter = this["$myCopyFreeze"](this.searcheForm) //自定义查询
+            }
+            return query;
         }
 
         // 创建后
         mounted() {
-            //this.$nextTick(() => {
-            //    debugger
-            //    const pageHeight = document.body.offsetHeight;
-            //    let tbMain = this.$refs.tb_main as HTMLElement;
-            //    tbMain.style.height = (pageHeight - 150) + 'px';
-            //});
             const This = this;
             this.$nextTick(() => {
-                let tbHeader = This.$refs.tb_header as HTMLElement;
-                let tbFooter = This.$refs.tb_footer as HTMLElement;
+                let tbHeader: HTMLElement = This.$refs.tb_header as HTMLElement;
+                let tbFooter: HTMLElement = This.$refs.tb_footer as HTMLElement;
 
                 const IntervalHeight = 80;// 间隔高度
                 const thisHeight = (This.pageHeight - tbHeader["$el"].offsetHeight - tbFooter["$el"].offsetHeight - IntervalHeight);
                 This.tbMainHeight = thisHeight + 'px';
                 This.tableHeight = (thisHeight - 20);
             });
-            const item = {
-                date: '2016-05-02',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-            };
-            this.tableData = Array(100).fill(item);
+
+            this.getTableData();
         }
 
     }
@@ -144,7 +181,7 @@
 
     .el-footer {
         height: auto !important;
-        text-align:right
+        text-align: right
     }
 
     .el-main {
@@ -152,9 +189,6 @@
         text-align: center;
         padding: 5px 10px 5px 10px !important;
     }
-
-    
-
 </style>
 <style>
     /* 滚动条的整体样式 */

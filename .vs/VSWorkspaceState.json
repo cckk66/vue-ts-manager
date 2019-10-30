@@ -1,11 +1,7 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\public",
-    "\\src",
-    "\\src\\assets",
-    "\\src\\components"
+    ""
   ],
-  "SelectedNode": "\\src\\App.vue",
+  "SelectedNode": "\\package-lock.json",
   "PreviewInSolutionExplorer": false
 }

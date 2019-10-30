@@ -8,6 +8,7 @@ import '@/plugins/element.ts';
 import '@/styles/index.less';
 import '@/icons';
 import './permission';
+import '@/utils/vueExtend.ts';
 //  import './mock';
 // import VueRouter, { RawLocation } from 'vue-router';
 // const routerPush = VueRouter.prototype.push;
