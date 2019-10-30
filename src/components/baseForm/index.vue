@@ -1,10 +1,11 @@
 <template>
 </template>
 <script lang="ts">
-    import { Component, Vue, Watch } from 'vue-property-decorator';
+    import { Component, Vue, Watch,Prop } from 'vue-property-decorator';
     @Component
     export default class Form extends Vue {
         //表单是否实现
+        @Prop()
         public dialogVisible: boolean = false
         //表单关闭
         public closeOnClickModal: boolean = false

@@ -81,7 +81,7 @@
         </myTable>
         <editForm 
                   :sysGroup="sysGroup" 
-                  v-model="editFormVisible" />
+                  :dialogVisible="editFormVisible" />
     </div>
    
 

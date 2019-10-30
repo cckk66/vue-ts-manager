@@ -18,7 +18,7 @@
 </script>-->
 <template>
     <el-dialog :title="dialogTitle"
-               :visible.sync="dialogVisible1"
+               :visible.sync="dialogVisible"
                width="500px"
                @open="dialogOpen"
                v-loading="dialogLoding"
@@ -53,12 +53,12 @@
 
         @Prop()
         private sysGroup!: any
-
+        
         private dialogOpen(): void {
             debugger
             const This = this as any;
             if (This.sysGroup) {
-                This.FormPost(This.cPATask.ID).then((formData: any) => {
+                This.FormPost(This.sysGroup.ID).then((formData: any) => {
                     This.form = formData;
                 }).catch((err: any) => {
 
