@@ -5,6 +5,8 @@
     //import * as sysgroupService from '@/services/Sys/sysgroupService';
     @Component
     export default class Table extends Vue {
+        //编辑页面是否显示
+        public editFormVisible: boolean= false
         //定义获取数据方法子类重写
         public getTableData(): void {
 
@@ -63,6 +65,7 @@
 
         //获取查询条件
         public PageQuery(): any {
+            const This = this as any;
             let query = {
                 PageIndex: this.page.current, //当前页码
                 PageSize: this.page.size, //显示行数
@@ -74,7 +77,7 @@
             };
             if (this.searcheForm) {
                 //query["Filter"] = this.$myFreeze(this.searchForm) //自定义查询
-                query.Filter = this["$myCopyFreeze"](this.searcheForm) //自定义查询
+                query.Filter =This.$myCopyFreeze(this.searcheForm) //自定义查询
             }
             return query;
         }
