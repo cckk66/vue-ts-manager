@@ -1,7 +1,18 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\src",
+    "\\src\\components",
+    "\\src\\components\\baseForm",
+    "\\src\\components\\baseTable",
+    "\\src\\services",
+    "\\src\\services\\Sys",
+    "\\src\\views",
+    "\\src\\views\\sys",
+    "\\src\\views\\sys\\sysGroup",
+    "\\tests",
+    "\\tests\\unit"
   ],
-  "SelectedNode": "\\package-lock.json",
+  "SelectedNode": "\\src\\views\\sys\\sysGroup\\editForm.vue",
   "PreviewInSolutionExplorer": false
 }
