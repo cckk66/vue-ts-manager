@@ -42,41 +42,28 @@ Vue.prototype.$myCopyFreeze = function (obj: any) {
     }
     return obj
 }
-//export default {
-//    install: function (vue: Vue, options: any) {
-//        // 双向绑定深拷贝
-//        vue.prototype.$myFreeze = function (obj) {
-//            if (obj) {
-//                let result = Array.isArray(obj) ? [] : {};
-//                for (let key in obj) {
-//                    if (obj.hasOwnProperty(key)) {
-//                        if (typeof obj[key] === 'object') {
-//                            result[key] = Vue.prototype.$myFreeze(obj[key]);   //递归复制
-//                        } else {
-//                            result[key] = obj[key];
-//                        }
-//                    }
-//                }
-//                return result;
-//                //return JSON.parse(JSON.stringify(data))
-//            }
-//            return obj
-//        }
-//        // 双向绑定深拷贝
-//        vue.prototype.$myCopyFreeze = function (obj) {
-//            if (obj) {
-//                let result = Array.isArray(obj) ? [] : {};
-//                for (let key in obj) {
-//                    if (typeof obj[key] === 'object') {
-//                        result[key] = Vue.prototype.$myFreeze(obj[key]);   //递归复制
-//                    } else {
-//                        result[key] = obj[key];
-//                    }
-//                }
-//                return result;
-//                //return JSON.parse(JSON.stringify(data))
-//            }
-//            return obj
-//        }
-//    }
-//}
+Vue.prototype.$GUID = function (): string {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
+
+// 成功
+Vue.prototype.$successBox = function (str: string) {
+    this.$message({
+        message: str,
+        type: 'success'
+    })
+}
+// 警告
+Vue.prototype.$warningBox = function (str: string) {
+    this.$message({
+        message: str,
+        type: 'warning'
+    })
+}
+// 失败
+Vue.prototype.$errorBox = function (str: string) {
+    this.$message.error(str)
+}

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Message, MessageBox } from 'element-ui';
+import { GlobalModule, IHeader } from '@/store/modules/global';
 const baseURL = process.env.VUE_APP_API_URL;
 const service = axios.create({
     baseURL: baseURL,
@@ -8,6 +9,13 @@ const service = axios.create({
 // Request interceptors
 service.interceptors.request.use(
     (config) => {
+        let requestHeaders = GlobalModule.requestHeaders;
+        if (requestHeaders.length > 0) {
+            requestHeaders.forEach((m: IHeader) => {
+                config.headers[m.key] = m.value
+            });
+            GlobalModule.clearRequestHeaders();
+        }
         return config;
     },
     (error) => {
@@ -24,6 +32,8 @@ service.interceptors.response.use(
         // code == 50014: token expired
         // code == 60204: account or password is incorrect
         // You can change this part for your own usage.
+
+
         return response.data.apiData;
     },
     (error) => {

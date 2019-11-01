@@ -1,7 +1,8 @@
 <template>
 </template>
 <script lang="ts">
-    import { Component, Vue, Watch,Prop } from 'vue-property-decorator';
+    import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
+    import { GlobalModule, IHeader } from '@/store/modules/global';
     @Component
     export default class Form extends Vue {
         //表单是否实现
@@ -9,7 +10,7 @@
         public dialogVisible: boolean = false
         //表单关闭
         public closeOnClickModal: boolean = false
-        
+
         //表单提交按钮是否禁用
         public btnDisabled: boolean = false
         //弹窗加载
@@ -52,11 +53,11 @@
         //表单获取API
         public getFormData: Function = (postData: any) => { }
         //表单获取
-        public FormPost(postData: any) {
+        public FormRequst(postData: any) {
             const This = this as any;
             return this.getFormData(postData).then((data: any) => {
-                
                 This.oldForm = This.$myFreeze(data);
+                This.GUID = This.$GUID();
                 return new Promise(function (resolve, reject) {
                     resolve(data)
                 });
@@ -81,6 +82,7 @@
         public SubmitFunApi: Function = (postData: any) => { }
         //表单提交
         public FormSubmit(postData: any): Promise<any> {
+            const This = this as any;
             this.btnDisabled = true
             const refForm = this.$refs["form"] as HTMLFormElement;
             let formValid: boolean = false
@@ -90,6 +92,9 @@
                 console.log(object)
             });
             if (formValid) {
+                //表单唯一标识
+                GlobalModule.setRequestHeaders([{ key: "BmForm", value: This.GUID }]);
+
                 return this.SubmitFunApi(postData)
                     .then((data: any) => {
                         this.btnDisabled = false
@@ -133,7 +138,10 @@
         //关闭表单
         public close() {
             this.Reset();
-            this.dialogVisible = false;
+        }
+        public closeDialog() {
+            this.close();
+            this.$emit("closeDialog");//通知列表页面关闭弹窗
         }
     }
 </script>

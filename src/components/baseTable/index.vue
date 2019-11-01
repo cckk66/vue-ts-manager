@@ -5,8 +5,7 @@
     //import * as sysgroupService from '@/services/Sys/sysgroupService';
     @Component
     export default class Table extends Vue {
-        //编辑页面是否显示
-        public editFormVisible: boolean= false
+       
         //定义获取数据方法子类重写
         public getTableData(): void {
 
@@ -81,6 +80,12 @@
             }
             return query;
         }
+        //编辑页面是否显示
+        public dialogVisible: boolean = false
+        public closeFormDialog(): void {
+            this.dialogVisible = false
+        }
+
 
         // 创建后
         mounted() {

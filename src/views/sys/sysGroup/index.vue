@@ -81,7 +81,8 @@
         </myTable>
         <editForm 
                   :sysGroup="sysGroup" 
-                  :dialogVisible="editFormVisible" />
+                  :dialogVisible="dialogVisible"
+                  @closeDialog="closeFormDialog"/>
     </div>
    
 
@@ -111,7 +112,7 @@
         public edit(row: any): void {
             const This = this as any;
             This.sysGroup = row;
-            This.editFormVisible = true
+            This.dialogVisible = true
 
         };
         public getTableData(): void {
