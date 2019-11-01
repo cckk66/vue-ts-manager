@@ -51,9 +51,13 @@
         private saveSysGroup(): void {
             const This = this as any;
             This.FormSubmit(This.form).then((value: any) => {
-                if (value > 0)
+                debugger
+                if (value > 0) {
+                    This.refreshTable();
+                }
+                else {
                     This.closeDialog();
-
+                }
             }).catch((err: string) => {
                 This.warningBox(err)
             })

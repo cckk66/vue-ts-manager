@@ -82,6 +82,7 @@
         <editForm 
                   :sysGroup="sysGroup" 
                   :dialogVisible="dialogVisible"
+                  @refreshTable="refreshTable"
                   @closeDialog="closeFormDialog"/>
     </div>
    

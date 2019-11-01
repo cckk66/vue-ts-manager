@@ -85,6 +85,11 @@
         public closeFormDialog(): void {
             this.dialogVisible = false
         }
+        public refreshTable(): void {
+            this.dialogVisible = false
+            this.handleSearchFormSubmit();
+        }
+        
 
 
         // ´´½¨ºó

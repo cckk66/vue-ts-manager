@@ -139,9 +139,14 @@
         public close() {
             this.Reset();
         }
-        public closeDialog() {
+        public closeDialog(): void {
             this.close();
             this.$emit("closeDialog");//通知列表页面关闭弹窗
         }
+        public refreshTable(): void{
+            this.close();
+            this.$emit("refreshTable");//通知列表页面关闭弹窗
+        }
+        
     }
 </script>
