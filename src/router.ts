@@ -30,10 +30,35 @@ export default new Router({
             meta: { title: '系统管理', icon: 'example' },
             children: [
                 {
+                    path: 'YHGL',
+                    name: '用户管理',
+                    component: () => import('./views/sys/sysGroup/index.vue'),
+                    meta: { title: '用户管理', icon: 'table' },
+                },
+                {
                     path: 'FZGL',
                     name: '分组管理',
                     component: () => import('./views/sys/sysGroup/index.vue'),
                     meta: { title: '分组管理', icon: 'table' },
+                },
+                {
+                    path: 'CCGL',
+                    name: '菜单管理',
+                    component: () => import('./views/sys/sysMenu/index.vue'),
+                    meta: { title: '菜单管理', icon: 'table' },
+                },
+                {
+                    path: 'EJCD',
+                    name: '二级菜单',
+                    meta: { title: '二级菜单', icon: 'table' },
+                    children: [
+                        {
+                            path: 'SJCD',
+                            name: '三级菜单',
+                            component: () => import('./views/sys/sysGroup/index.vue'),
+                            meta: { title: '三级菜单', icon: 'table' },
+                        },
+                        ]
                 }
 
             ]

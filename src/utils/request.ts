@@ -25,16 +25,30 @@ service.interceptors.request.use(
 // Response interceptors
 service.interceptors.response.use(
     (response) => {
-        // Some example codes here:
-        // code == 20000: valid
-        // code == 50008: invalid token
-        // code == 50012: already login in other place
-        // code == 50014: token expired
-        // code == 60204: account or password is incorrect
-        // You can change this part for your own usage.
-
-
-        return response.data.apiData;
+        debugger
+        const res = response.data
+        const stateCode = res.stateCode
+        const stateEnum = {
+            'tip': 0, // 提示
+            'success': 1, // 成功
+            'error': 2, // 出错
+            'noLogin': 3, // 没有登陆
+            'noPermission': 4, // 没有权限
+            'warning': 5, // 警告
+        }
+        switch (stateCode) {
+            case stateEnum.success:
+                return res.apiData
+            case stateEnum.error:
+            case stateEnum.noPermission:
+            case stateEnum.warning:
+                Message({
+                    message: res.message,
+                    type: 'error',
+                    duration: 5 * 1000
+                })
+                return Promise.reject(res)
+        }
     },
     (error) => {
         Message({

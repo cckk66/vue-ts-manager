@@ -3,23 +3,32 @@
         <myTable>
             <div slot="headerForm" ref="tb_header">
                 <el-form ref="searcheForm" :model="searcheForm" class="demo-form-inline el-form--inline">
-                    <el-form-item prop="GroupName" label="名称">
-                        <el-input v-model="searcheForm.GroupName"></el-input>
-                    </el-form-item>
-                    <el-form-item prop="Remark" label="备注">
-                        <el-input v-model="searcheForm.Remark"></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" icon="el-icon-search" size="small" @click="handleSearchFormSubmit">
-                            查询
-                        </el-button>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button icon="el-icon-refresh" size="small" @click="handleSearchFormReset">
-                            重置
-                        </el-button>
-                    </el-form-item>
+                    <el-row>
+                        <el-form-item prop="GroupName" label="名称">
+                            <el-input v-model="searcheForm.GroupName"></el-input>
+                        </el-form-item>
+                        <el-form-item prop="Remark" label="备注">
+                            <el-input v-model="searcheForm.Remark"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" icon="el-icon-search" size="small" @click="handleSearchFormSubmit">
+                                查询
+                            </el-button>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button icon="el-icon-refresh" size="small" @click="handleSearchFormReset">
+                                重置
+                            </el-button>
+                        </el-form-item>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="24" style="padding-bottom:10px;text-align:right">
+                            <el-button type="primary" @click="add" plain>新增</el-button>
+                        </el-col>
+                    </el-row>
                 </el-form>
+                
+
             </div>
             <div slot="mainTable" ref="tb_main">
                 <el-table :data="tableData" ref="mytable" :height="tableHeight">
@@ -113,6 +122,13 @@
         public edit(row: any): void {
             const This = this as any;
             This.sysGroup = row;
+            This.dialogVisible = true
+
+        };
+
+        public add(): void {
+            const This = this as any;
+            This.sysGroup = { ID: 0, GroupName: "", Remark:""};
             This.dialogVisible = true
 
         };

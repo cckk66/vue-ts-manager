@@ -8,7 +8,9 @@
                @close="close"
                :close-on-click-modal="closeOnClickModal">
         <el-form ref="form"
-                 :model="form" label-width="80px" size="small">
+                 :model="form"
+                 :rules="rules"
+                 label-width="80px" size="small">
             <el-form-item prop="GroupName" label="分组名称">
                 <el-input v-model="form.GroupName"></el-input>
             </el-form-item>
@@ -39,19 +41,22 @@
 
         private dialogOpen(): void {
             const This = this as any;
-            if (This.sysGroup) {
+            if (This.sysGroup && This.sysGroup.ID > 0) {
                 This.FormRequst(This.sysGroup.ID).then((formData: any) => {
                     This.form = formData;
                 }).catch((err: any) => {
 
                 })
+            } else {
+                This.FormGuidInit();
+                This.form = This.sysGroup;
             }
         }
 
         private saveSysGroup(): void {
             const This = this as any;
             This.FormSubmit(This.form).then((value: any) => {
-                debugger
+               debugger
                 if (value > 0) {
                     This.refreshTable();
                 }
@@ -59,7 +64,7 @@
                     This.closeDialog();
                 }
             }).catch((err: string) => {
-                This.warningBox(err)
+                //This.warningBox(err)
             })
         }
         // 创建后
@@ -67,6 +72,15 @@
             const This = this as any;
             This.getFormData = sysgroupService.getsysGroup;
             This.SubmitFunApi = sysgroupService.saveSysGroup;
+            This.rules = {
+                GroupName: [
+                    { required: true, message: '不能为空', trigger: 'blur' },
+                    { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
+                ],
+                Remark: [
+                    { min: 0, max: 50, message: '长度在 0 到 50 个字符', trigger: 'blur' }
+                ]
+            }
             This.dialogName = "用户分组";
         }
     }

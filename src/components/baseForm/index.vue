@@ -17,6 +17,8 @@
         public dialogLoding: boolean = false
         //表单数据
         public form: any = {}
+        //表单验证
+        public rules: any = {}
         //表单原生数据
         public oldForm: any = {}
 
@@ -53,11 +55,11 @@
         //表单获取API
         public getFormData: Function = (postData: any) => { }
         //表单获取
-        public FormRequst(postData: any) {
+        public FormRequst(postData: any): void {
             const This = this as any;
             return this.getFormData(postData).then((data: any) => {
                 This.oldForm = This.$myFreeze(data);
-                This.GUID = This.$GUID();
+                This.FormGuidInit();
                 return new Promise(function (resolve, reject) {
                     resolve(data)
                 });
@@ -66,6 +68,11 @@
                     reject(err)
                 });
             })
+        }
+        //表单唯一标识吗设置
+        public FormGuidInit(): void {
+            const This = this as any;
+            This.GUID = This.$GUID();
         }
         //警告提示框
         public warningBox(msg: string): void {
