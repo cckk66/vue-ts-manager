@@ -44,7 +44,6 @@ router.beforeEach((to: Route, from: Route, next: any) => {
 
 const _import = require('@/router/_import_' + process.env.NODE_ENV)// 获取组件的方法
 import Layout from './views/layout/Layout.vue';
-import { debug } from 'util';
 
 const saveObjArr = (name: string, data: any[]) => { // localStorage 存储数组对象的方法
     localStorage.setItem(name, JSON.stringify(data));

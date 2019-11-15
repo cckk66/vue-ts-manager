@@ -25,7 +25,6 @@ service.interceptors.request.use(
 // Response interceptors
 service.interceptors.response.use(
     (response) => {
-        debugger
         const res = response.data
         const stateCode = res.stateCode
         const stateEnum = {

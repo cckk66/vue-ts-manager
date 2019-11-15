@@ -1,17 +1,19 @@
 
 <template>
     <el-dialog title="设置菜单排序"
-               :visible.sync="dialogVisible"
+
+               :visible.sync="dialogSrotVisible"
                width="500px"
                @open="dialogOpen"
                v-loading="dialogLoding"
-               @close="close"
+               @close="closeDialog"
                :close-on-click-modal="closeOnClickModal">
 
         <el-table :data="list"
                   style="width: 100%;margin-bottom: 20px;"
                   row-key="ID"
                   border
+                   ref="menuTable"
                   default-expand-all
                   :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
             <el-table-column prop="date"
@@ -51,18 +53,28 @@
 
         //表单是否实现
         @Prop()
-        public dialogVisible: boolean = false
-      
+        public dialogSrotVisible: boolean = true
+        // 表单加载
+        private dialogLoding: boolean = false
+
+        // 表单提交按钮是否禁用
+        public btnDisabled: boolean = false;
+        // 表单关闭
+        public closeOnClickModal: boolean = false;
+
         private list: any[] = []
         private sortable: Sortable | null = null
         private oldList: number[] = []
         private newList: number[] = []
 
         public getTableData(): void {
-            const This = this as any;
 
+            const This = this as any;
+            This.dialogLoding = true;
             getSysMenuPage({}).then((data: any) => {
                 This.list = data.rows;
+                This.setSort()
+                This.dialogLoding = false;
             })
         };
         private dialogOpen(): void {
@@ -70,8 +82,8 @@
         }
 
         //设置排序
-        private setSort() {
-            const el = (this.$refs.draggableTable as Vue).$el.querySelectorAll('.el-table__body-wrapper > table > tbody')[0] as HTMLElement
+        private setSort(): void {
+            const el = (this.$refs.menuTable as Vue).$el.querySelectorAll('.el-table__body-wrapper > table > tbody')[0] as HTMLElement
             this.sortable = Sortable.create(el, {
                 ghostClass: 'sortable-ghost', // Class name for the drop placeholder
                 onEnd: evt => {
@@ -85,6 +97,20 @@
                 }
             })
         }
+        // 保存排序
+        private saveMenuSort(): void {
+            const This = this as any;
+            This.btnDisabled = true;
+            This.refreshTable();
+        }
+        // 关闭弹窗
+        public closeDialog(): void {
+            this.$emit("closeDialog");//通知列表页面关闭弹窗
+        }
+        public refreshTable(): void {
+            this.$emit("refreshTable");//通知列表页面关闭弹窗
+        }
+
         // 创建后
         mounted() {
             const This = this as any;

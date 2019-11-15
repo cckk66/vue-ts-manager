@@ -6,15 +6,15 @@
     @Component
     export default class Table extends Vue {
        
-        //¶¨Òå»ñÈ¡Êý¾Ý·½·¨×ÓÀàÖØÐ´
+        //å®šä¹‰èŽ·å–æ•°æ®æ–¹æ³•å­ç±»é‡å†™
         public getTableData(): void {
 
         };
-        //¶¨Òå²éÑ¯Àà
+        //å®šä¹‰æŸ¥è¯¢ç±»
         public searcheForm: any = {}
-        // ±í¸ñÊý¾Ý
+        // è¡¨æ ¼æ•°æ®
         public tableData: any = [];
-        //±í¸ñ·ÖÒ³ÐÅÏ¢
+        //è¡¨æ ¼åˆ†é¡µä¿¡æ¯
         public page: any = {
             pagesizes: [10, 30, 100, 200, 400],
             current: 1,
@@ -22,17 +22,17 @@
             total: 0,
             IsPage: true,
         }
-        //±í¸ñ·ÖÒ³ÅÅÐòÐÅÏ¢
+        //è¡¨æ ¼åˆ†é¡µæŽ’åºä¿¡æ¯
         private sort: any = {
             prop: "",
             order: "descending",
         }
 
 
-        // table¸ß
+        // tableé«˜
         private tableHeight: number = 0;
 
-        // Ò³Ãæ¸ß
+        // é¡µé¢é«˜
         get pageHeight() {
             return document.body.offsetHeight;
         }
@@ -62,25 +62,25 @@
             this.handleSearchFormSubmit();
         }
 
-        //»ñÈ¡²éÑ¯Ìõ¼þ
+        //èŽ·å–æŸ¥è¯¢æ¡ä»¶
         public PageQuery(): any {
             const This = this as any;
             let query = {
-                PageIndex: this.page.current, //µ±Ç°Ò³Âë
-                PageSize: this.page.size, //ÏÔÊ¾ÐÐÊý
-                OrderBy: this.sort.prop, //ÅÅÐò×Ö¶Î
-                IsDesc: this.sort.order === "descending", //ÊÇ·ñ½µÐò
+                PageIndex: this.page.current, //å½“å‰é¡µç 
+                PageSize: this.page.size, //æ˜¾ç¤ºè¡Œæ•°
+                OrderBy: this.sort.prop, //æŽ’åºå­—æ®µ
+                IsDesc: this.sort.order === "descending", //æ˜¯å¦é™åº
                 IsPage: this.sort.IsPage,
                 Filter: {},
 
             };
             if (this.searcheForm) {
-                //query["Filter"] = this.$myFreeze(this.searchForm) //×Ô¶¨Òå²éÑ¯
-                query.Filter = This.$myCopyFreeze(this.searcheForm); //×Ô¶¨Òå²éÑ¯
+                //query["Filter"] = this.$myFreeze(this.searchForm) //è‡ªå®šä¹‰æŸ¥è¯¢
+                query.Filter = This.$myCopyFreeze(this.searcheForm); //è‡ªå®šä¹‰æŸ¥è¯¢
             }
             return query;
         }
-        //±à¼­Ò³ÃæÊÇ·ñÏÔÊ¾
+        //ç¼–è¾‘é¡µé¢æ˜¯å¦æ˜¾ç¤º
         public dialogVisible: boolean = false
         public closeFormDialog(): void {
             this.dialogVisible = false;
@@ -92,7 +92,7 @@
         
 
 
-        // ´´½¨ºó
+        // åˆ›å»ºåŽ
         mounted() {
             const This = this;
             this.$nextTick(() => {
@@ -102,8 +102,16 @@
                     let tbHeader: HTMLElement = This.$refs.tb_header as HTMLElement;
                     let tbFooter: HTMLElement = This.$refs.tb_footer as HTMLElement;
 
-                    const IntervalHeight = 80;// ¼ä¸ô¸ß¶È
-                    const thisHeight = (This.pageHeight - tbHeader.offsetHeight - tbFooter.offsetHeight - IntervalHeight);
+                    let tbHeaderOffsetHeight = 0;
+                    let tbFooterOffsetHeight = 0;
+                    if (tbHeader && tbHeader.hasOwnProperty("offsetHeight")) {
+                        tbHeaderOffsetHeight = tbHeader.offsetHeight;
+                    }
+                    if (tbFooter && tbFooter.hasOwnProperty("offsetHeight")) {
+                        tbFooterOffsetHeight = tbFooter.offsetHeight;
+                    }
+                    const IntervalHeight = 80;// é—´éš”é«˜åº¦
+                    const thisHeight = (This.pageHeight - tbHeaderOffsetHeight - tbFooterOffsetHeight - IntervalHeight);
                     This.tableHeight = (thisHeight - 25);
                 }
             });

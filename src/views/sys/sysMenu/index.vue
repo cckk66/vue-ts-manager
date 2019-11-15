@@ -4,12 +4,11 @@
             <div slot="headerForm" ref="tb_header">
                 <el-form ref="searcheForm" :model="searcheForm" class="demo-form-inline el-form--inline">
                     <el-row>
-                        <el-col :span="6" style="padding-bottom:10px;text-align:right">
+                        <el-col :span="24" style="padding-bottom:10px;text-align:right">
                             <el-button type="primary" @click="add" plain>新增</el-button>
-                        </el-col>
-                        <el-col :span="6" style="padding-bottom:10px;text-align:right">
                             <el-button type="primary" @click="sortMenu" plain>排序</el-button>
                         </el-col>
+                       
                     </el-row>
                 </el-form>
             </div>
@@ -45,9 +44,10 @@
         </div>-->
         </myTable>
 
-        <editForm 
+        <setMenuSort 
                   :dialogSrotVisible="dialogSrotVisible"
                   @refreshTable="refreshTable"
+                   @closeDialog="closeDialog"
                  />
     </div>
    
@@ -89,7 +89,8 @@
             This.dialogVisible = true
 
         };
-
+        //菜单排序是否显示
+        private dialogSrotVisible: boolean = false;
         public sortMenu(): void {
             const This = this as any;
             This.dialogSrotVisible = true
@@ -100,6 +101,12 @@
             This.dialogSrotVisible = false
             This.getTableData();
         };
+
+        public closeDialog(): void {
+            const This = this as any;
+            This.dialogSrotVisible = false
+        };
+
         public getTableData(): void {
             const This = this as any;
 
