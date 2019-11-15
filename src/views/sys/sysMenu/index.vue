@@ -4,8 +4,11 @@
             <div slot="headerForm" ref="tb_header">
                 <el-form ref="searcheForm" :model="searcheForm" class="demo-form-inline el-form--inline">
                     <el-row>
-                        <el-col :span="24" style="padding-bottom:10px;text-align:right">
+                        <el-col :span="6" style="padding-bottom:10px;text-align:right">
                             <el-button type="primary" @click="add" plain>新增</el-button>
+                        </el-col>
+                        <el-col :span="6" style="padding-bottom:10px;text-align:right">
+                            <el-button type="primary" @click="sortMenu" plain>排序</el-button>
                         </el-col>
                     </el-row>
                 </el-form>
@@ -30,20 +33,22 @@
                                      sortable
                                      width="180">
                     </el-table-column>
-                    <el-table-column 
-                                     label="操作">
+                    <el-table-column label="操作">
                     </el-table-column>
                 </el-table>
 
             </div>
             <!--<div slot="footerPagination" ref="tb_footer">
-         
 
 
-            </div>-->
+
+        </div>-->
         </myTable>
-       
 
+        <editForm 
+                  :dialogSrotVisible="dialogSrotVisible"
+                  @refreshTable="refreshTable"
+                 />
     </div>
    
 
@@ -55,9 +60,11 @@
     import myTable from '@/components/baseTable/myTable.vue'
     import { Component, Vue } from 'vue-property-decorator';
     import { getSysMenuPage } from '@/services/Sys/sysMenuService';
+    import setMenuSort from "./setMenuSort.vue";
     @Component({
         components: {
-            myTable
+            myTable,
+            setMenuSort
         }
     })
     export default class sysMenuTable extends baseTable {
@@ -81,6 +88,17 @@
             This.sysMenu = { ID: 0 };
             This.dialogVisible = true
 
+        };
+
+        public sortMenu(): void {
+            const This = this as any;
+            This.dialogSrotVisible = true
+
+        };
+        public refreshTable(): void {
+            const This = this as any;
+            This.dialogSrotVisible = false
+            This.getTableData();
         };
         public getTableData(): void {
             const This = this as any;

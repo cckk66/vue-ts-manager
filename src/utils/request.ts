@@ -29,12 +29,12 @@ service.interceptors.response.use(
         const res = response.data
         const stateCode = res.stateCode
         const stateEnum = {
-            'tip': 0, // 提示
-            'success': 1, // 成功
-            'error': 2, // 出错
-            'noLogin': 3, // 没有登陆
-            'noPermission': 4, // 没有权限
-            'warning': 5, // 警告
+            'tip': 0, // 鎻愮ず
+            'success': 1, // 鎴愬姛
+            'error': 2, // 鍑洪敊
+            'noLogin': 3, // 娌℃湁鐧婚檰
+            'noPermission': 4, // 娌℃湁鏉冮檺
+            'warning': 5, // 璀﹀憡
         }
         switch (stateCode) {
             case stateEnum.success:

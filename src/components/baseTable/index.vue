@@ -20,12 +20,12 @@
             current: 1,
             size: 10,
             total: 0,
-            IsPage: true
+            IsPage: true,
         }
         //表格分页排序信息
         private sort: any = {
             prop: "",
-            order: "descending"
+            order: "descending",
         }
 
 
@@ -71,22 +71,22 @@
                 OrderBy: this.sort.prop, //排序字段
                 IsDesc: this.sort.order === "descending", //是否降序
                 IsPage: this.sort.IsPage,
-                Filter: {}
+                Filter: {},
 
             };
             if (this.searcheForm) {
                 //query["Filter"] = this.$myFreeze(this.searchForm) //自定义查询
-                query.Filter =This.$myCopyFreeze(this.searcheForm) //自定义查询
+                query.Filter = This.$myCopyFreeze(this.searcheForm); //自定义查询
             }
             return query;
         }
         //编辑页面是否显示
         public dialogVisible: boolean = false
         public closeFormDialog(): void {
-            this.dialogVisible = false
+            this.dialogVisible = false;
         }
         public refreshTable(): void {
-            this.dialogVisible = false
+            this.dialogVisible = false;
             this.handleSearchFormSubmit();
         }
         
