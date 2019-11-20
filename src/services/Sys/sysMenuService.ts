@@ -10,3 +10,13 @@ export const getSysMenuPage = (queryCondition: any) => {
     })
 }
 
+//±¨´í²Ëµ¥ÅÅÐò
+export const saveMenuSort = (queryCondition: any) => {
+    return request({
+        url: '/sysMenu/saveMenuSort',
+        method: 'post',
+        data: queryCondition,
+    })
+}
+
+

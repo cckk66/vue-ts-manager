@@ -1,7 +1,6 @@
 
 <template>
     <el-dialog title="设置菜单排序"
-
                :visible.sync="dialogSrotVisible"
                width="500px"
                @open="dialogOpen"
@@ -9,29 +8,20 @@
                @close="closeDialog"
                :close-on-click-modal="closeOnClickModal">
 
-        <el-table :data="list"
-                  style="width: 100%;margin-bottom: 20px;"
-                  row-key="ID"
-                  border
-                   ref="menuTable"
-                  default-expand-all
-                  :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-            <el-table-column prop="date"
-                             label="ICON"
-                             sortable
-                             width="100">
-                <template slot-scope="scope">
-                    <i :class="scope.row.Icon"></i>
-                </template>
-            </el-table-column>
-            <el-table-column prop="Name"
-                             label="名称"
-                             sortable
-                             width="180">
-            </el-table-column>
-            <el-table-column label="操作">
-            </el-table-column>
-        </el-table>
+        <el-tree :data="list"
+                 node-key="ID"
+                 default-expand-all
+                 @node-drag-start="handleDragStart"
+                 @node-drag-enter="handleDragEnter"
+                 @node-drag-leave="handleDragLeave"
+                 @node-drag-over="handleDragOver"
+                 @node-drag-end="handleDragEnd"
+                 @node-drop="handleDrop"
+                 draggable
+                 :allow-drop="allowDrop"
+                 :allow-drag="allowDrag">
+        </el-tree>
+
 
 
         <div slot="footer" class="dialog-footer">
@@ -41,9 +31,8 @@
     </el-dialog>
 </template>
 <script lang="ts">
-    import Sortable from 'sortablejs'
     import { Component, Prop, Vue } from 'vue-property-decorator';
-    import { getSysMenuPage } from '@/services/Sys/sysMenuService';
+    import { getSysMenuPage, saveMenuSort } from '@/services/Sys/sysMenuService';
     @Component({
         components: {
 
@@ -53,7 +42,7 @@
 
         //表单是否实现
         @Prop()
-        public dialogSrotVisible: boolean = true
+        public dialogSrotVisible: boolean = false
         // 表单加载
         private dialogLoding: boolean = false
 
@@ -63,46 +52,100 @@
         public closeOnClickModal: boolean = false;
 
         private list: any[] = []
-        private sortable: Sortable | null = null
-        private oldList: number[] = []
-        private newList: number[] = []
-
         public getTableData(): void {
 
             const This = this as any;
             This.dialogLoding = true;
             getSysMenuPage({}).then((data: any) => {
+
+
                 This.list = data.rows;
-                This.setSort()
+
+                This.setList(This.list)
+
                 This.dialogLoding = false;
+
+
+               
             })
         };
-        private dialogOpen(): void {
 
-        }
 
-        //设置排序
-        private setSort(): void {
-            const el = (this.$refs.menuTable as Vue).$el.querySelectorAll('.el-table__body-wrapper > table > tbody')[0] as HTMLElement
-            this.sortable = Sortable.create(el, {
-                ghostClass: 'sortable-ghost', // Class name for the drop placeholder
-                onEnd: evt => {
-                    if (typeof (evt.oldIndex) !== 'undefined' && typeof (evt.newIndex) !== 'undefined') {
-                        const targetRow = this.list.splice(evt.oldIndex, 1)[0]
-                        this.list.splice(evt.newIndex, 0, targetRow)
-                        // for show the changes, you can delete in you code
-                        const tempIndex = this.newList.splice(evt.oldIndex, 1)[0]
-                        this.newList.splice(evt.newIndex, 0, tempIndex)
-                    }
+        private setList(lists: any[]) {
+            const This = this as any;
+            lists.forEach((list) => {
+                list["label"] = list["Name"];
+                if (list.children && list.children.length>0) {
+                    This.setList(list.children);
                 }
             })
+            //for (let list of lists) {
+            //    list["label"] = list["Name"];
+            //    if (list.children && list.children.length>0) {
+            //        This.setList(list.children);
+            //    }
+            //}
         }
+        private dialogOpen(): void {
+            const This = this as any;
+            this.getTableData();
+        }
+        private handleDragStart(node: any, ev: any) {
+            console.log('drag start', node);
+        }
+        private handleDragEnter(draggingNode: any, dropNode: any, ev: any) {
+            console.log('tree drag enter: ', dropNode.label);
+        }
+        private handleDragLeave(draggingNode: any, dropNode: any, ev: any) {
+            console.log('tree drag leave: ', dropNode.label);
+        }
+        private handleDragOver(draggingNode: any, dropNode: any, ev: any) {
+            console.log('tree drag over: ', dropNode.label);
+        }
+        private handleDragEnd(draggingNode: any, dropNode: any, dropType: any, ev: any) {
+            console.log('tree drag end: ', dropNode && dropNode.label, dropType);
+        }
+        private handleDrop(draggingNode: any, dropNode: any, dropType: any, ev: any) {
+            console.log('tree drop: ', dropNode.label, dropType);
+        }
+        private allowDrop(draggingNode: any, dropNode: any, type: any) {
+            if (dropNode.data.label === '二级 3-1') {
+                return type !== 'inner';
+            } else {
+                return true;
+            }
+        }
+        private allowDrag(draggingNode: any) {
+            return draggingNode.data.label.indexOf('三级 3-2-2') === -1;
+        }
+        private menuSort: { [key: number]: number; } = {};
         // 保存排序
         private saveMenuSort(): void {
             const This = this as any;
             This.btnDisabled = true;
+            This.menuSort = {};
+            This.setMenuSort(This.list);
+            saveMenuSort(This.menuSort)
+                .then((data: any) => {
+                    this.btnDisabled = false;
+                    This.refreshTable();
+                }).catch((err: any) => {
+                    this.btnDisabled = false;
+                    This.$errorBox("设置菜单顺序错误,请稍后再试！");
+                })
             This.refreshTable();
         }
+        private setMenuSort(lists: any[]) {
+            const This = this as any;
+            lists.forEach((ls: any, index: number) => {
+                This.menuSort[ls.ID] = (index+1)
+                if (ls.children && ls.children.length > 0) {
+                    This.setMenuSort(ls.children);
+                }
+            })
+          
+        }
+
         // 关闭弹窗
         public closeDialog(): void {
             this.$emit("closeDialog");//通知列表页面关闭弹窗
@@ -113,8 +156,7 @@
 
         // 创建后
         mounted() {
-            const This = this as any;
-            this.getTableData();
+           
 
         }
     }
