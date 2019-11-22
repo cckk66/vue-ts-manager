@@ -32,7 +32,7 @@ export default new Router({
                 {
                     path: 'YHGL',
                     name: '用户管理',
-                    component: () => import('./views/sys/sysGroup/index.vue'),
+                    component: () => import('./views/sys/sysUser/index.vue'),
                     meta: { title: '用户管理', icon: 'table' },
                 },
                 {

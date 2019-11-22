@@ -1,6 +1,6 @@
 <template>
     <div class="app-wrapper" :class="classObj">
-        <div class="logo menu-bar-width" style="background-color: rgb(20, 136, 154);">
+        <div v-if=" sidebar.opened" class="logo menu-bar-width" style="background-color: rgb(20, 136, 154);">
             <div>Vue-Ts</div>
         </div>
         <side-bar class="sidebar-container"></side-bar>
@@ -44,6 +44,7 @@
     .menu-bar-width {
         width: 180px;
     }
+
     .logo {
         position: absolute;
         top: 0;
@@ -52,12 +53,14 @@
         background: #545c64;
         cursor: pointer;
     }
-        .logo div{
+
+        .logo div {
             font-size: 20px;
             color: #fff;
             text-align: left;
             padding-left: 15px;
         }
+
     .app-wrapper {
         position: relative;
         height: 100%;
@@ -73,5 +76,4 @@
         position: absolute;
         z-index: 999;
     }
-   
 </style>
