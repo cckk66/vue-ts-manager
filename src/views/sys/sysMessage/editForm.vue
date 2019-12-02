@@ -2,7 +2,7 @@
 <template>
     <el-dialog :title="dialogTitle"
                :visible.sync="dialogVisible"
-               width="500px"
+               width="800px"
                @open="dialogOpen"
                v-loading="dialogLoding"
                @close="close"
@@ -15,12 +15,13 @@
                 <el-input v-model="form.Title"></el-input>
             </el-form-item>
             <el-form-item prop="Content" label="内容">
-                <el-input type="textarea" :rows="3" v-model="form.Content"></el-input>
+                <!--<el-input type="textarea" :rows="3" v-model="form.Content"></el-input>-->
+                <bmEditor v-model="form.Content"></bmEditor>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="closeDialog">取 消</el-button>
-            <el-button type="primary" ref="submitBtn" :disabled="btnDisabled" @click="saveSysGroup">确 定</el-button>
+            <el-button type="primary" ref="submitBtn" :disabled="btnDisabled" @click="savesysMessage">确 定</el-button>
         </div>
     </el-dialog>
 </template>
@@ -28,32 +29,33 @@
     import baseForm from '@/components/baseForm/index.vue'
     import { Component, Prop } from 'vue-property-decorator';
     import * as sysMessageService from '@/services/Sys/sysMessageService';
+    import bmEditor from "@/components/bmEditor/index.vue";
     @Component({
         components: {
-
+            bmEditor
         }
     })
-    export default class sysGroupTable extends baseForm {
+    export default class sysMessageTable extends baseForm {
         //表单是否实现
 
         @Prop()
-        private sysGroup!: any
+        private sysMessage!: any
 
         private dialogOpen(): void {
             const This = this as any;
-            if (This.sysGroup && This.sysGroup.ID > 0) {
-                This.FormRequst(This.sysGroup.ID).then((formData: any) => {
+            if (This.sysMessage && This.sysMessage.ID > 0) {
+                This.FormRequst(This.sysMessage.ID).then((formData: any) => {
                     This.form = formData;
                 }).catch((err: any) => {
 
                 })
             } else {
                 This.FormGuidInit();
-                This.form = This.sysGroup;
+                This.form = This.sysMessage;
             }
         }
 
-        private saveSysGroup(): void {
+        private savesysMessage(): void {
             const This = this as any;
             This.FormSubmit(This.form).then((value: any) => {
                 if (value > 0) {
