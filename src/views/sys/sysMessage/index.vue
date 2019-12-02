@@ -4,11 +4,11 @@
             <div slot="headerForm" ref="tb_header">
                 <el-form ref="searcheForm" :model="searcheForm" class="demo-form-inline el-form--inline">
                     <el-row>
-                        <el-form-item prop="LoginName" label="名称">
-                            <el-input v-model="searcheForm.LoginName"></el-input>
+                        <el-form-item prop="Title" label="标题">
+                            <el-input v-model="searcheForm.Title"></el-input>
                         </el-form-item>
-                        <el-form-item prop="ContractPhone" label="联系电话">
-                            <el-input v-model="searcheForm.ContractPhone"></el-input>
+                        <el-form-item prop="Content" label="内容">
+                            <el-input v-model="searcheForm.Content"></el-input>
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" icon="el-icon-search" size="mini" @click="handleSearchFormSubmit">
@@ -16,8 +16,7 @@
                             </el-button>
                         </el-form-item>
                         <el-form-item>
-                            <el-button icon="el-icon-circle-plus" type="primary" 
-                                      size="mini" @click="add" plain>新增</el-button>
+                            <el-button icon="el-icon-circle-plus" type="primary" size="mini" @click="add" plain>新增</el-button>
                         </el-form-item>
                         <el-form-item>
                             <el-button icon="el-icon-refresh" size="small" @click="handleSearchFormReset">
@@ -27,7 +26,7 @@
                     </el-row>
                     <!--<el-row>
                         <el-col :span="24" style="padding-bottom:10px;text-align:right">
-                            <el-button type="primary" icon="el-icon-refresh" @click="refresh" size="mini" plain>刷新</el-button>
+                            <el-button type="primary" icon="el-icon-refresh" @click="add" size="mini" plain>刷新</el-button>
                         </el-col>
                     </el-row>-->
                 </el-form>
@@ -36,18 +35,17 @@
             </div>
             <div slot="mainTable" ref="tb_main">
                 <el-table :data="tableData" ref="mytable" :height="tableHeight">
-                    <el-table-column label="名称" prop="LoginName" sortable="custom">
-                     
+                    <el-table-column label="标题" prop="Title" sortable="custom">
+                        <template slot-scope="scope">
+                            {{scope.row.Title}}
+                        </template>
                     </el-table-column>
 
-                    <el-table-column label="昵称" prop="NiceName" sortable="custom" :show-overflow-tooltip="true">
-                    
+                    <el-table-column label="内容" prop="Content" sortable="custom" :show-overflow-tooltip="true">
+                        <template slot-scope="scope">
+                            {{scope.row.Content}}
+                        </template>
                     </el-table-column>
-
-                    <el-table-column label="联系电话" prop="ContractPhone" sortable="custom" :show-overflow-tooltip="true">
-                      
-                    </el-table-column>
-
 
                     <el-table-column label="创建人" prop="CreatedUserName" :show-overflow-tooltip="true">
 
@@ -94,7 +92,7 @@
             </div>
         </myTable>
         <editForm 
-                  :sysUser="sysUser" 
+                  :sysMessage="sysMessage" 
                   :dialogVisible="dialogVisible"
                   @refreshTable="refreshTable"
                   @closeDialog="closeFormDialog"/>
@@ -109,38 +107,38 @@
     import myTable from '@/components/baseTable/myTable.vue'
     import editForm from "./editForm.vue";
     import { Component, Vue } from 'vue-property-decorator';
-    import { getsysUserPage } from '@/services/Sys/sysUserService';
+    import { getsysMessagePage } from '@/services/Sys/sysMessageService';
     @Component({
         components: {
             myTable, editForm
         }
     })
-    export default class sysUserTable extends baseTable {
+    export default class sysMessageTable extends baseTable {
         //单个分组
-        private sysUser: any = {};
+        private sysMessage: any = {};
         // 查询条件
         public searcheForm: any = {
-            GroupName: '',
-            Remark: '',
+            Title: '',
+            Content: '',
         }
 
         public edit(row: any): void {
             const This = this as any;
-            This.sysUser = row;
+            This.sysMessage = row;
             This.dialogVisible = true
 
         };
 
         public add(): void {
             const This = this as any;
-            This.sysUser = { ID: 0};
+            This.sysMessage = { ID: 0};
             This.dialogVisible = true
 
         };
         public getTableData(): void {
             const This = this as any;
 
-            getsysUserPage(This.PageQuery()).then((data: any) => {
+            getsysMessagePage(This.PageQuery()).then((data: any) => {
                 This.tableData = data.rows;
                 This.page.total = data.total;
             })

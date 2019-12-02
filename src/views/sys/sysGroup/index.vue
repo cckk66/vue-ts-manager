@@ -11,23 +11,26 @@
                             <el-input v-model="searcheForm.Remark"></el-input>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" icon="el-icon-search" size="small" @click="handleSearchFormSubmit">
+                            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleSearchFormSubmit">
                                 查询
                             </el-button>
                         </el-form-item>
                         <el-form-item>
-                            <el-button icon="el-icon-refresh" size="small" @click="handleSearchFormReset">
+                            <el-button type="primary" icon="el-icon-circle-plus" size="mini" @click="add" plain>新增</el-button>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button icon="el-icon-refresh" size="mini" @click="handleSearchFormReset">
                                 重置
                             </el-button>
                         </el-form-item>
                     </el-row>
-                    <el-row>
+                    <!--<el-row>
                         <el-col :span="24" style="padding-bottom:10px;text-align:right">
-                            <el-button type="primary" @click="add" plain>新增</el-button>
+                            <el-button type="primary" icon="el-icon-refresh" @click="refresh" size="mini" plain>刷新</el-button>
                         </el-col>
-                    </el-row>
+                    </el-row>-->
                 </el-form>
-                
+
 
             </div>
             <div slot="mainTable" ref="tb_main">
@@ -88,13 +91,12 @@
 
             </div>
         </myTable>
-        <editForm 
-                  :sysGroup="sysGroup" 
+        <editForm :sysGroup="sysGroup"
                   :dialogVisible="dialogVisible"
                   @refreshTable="refreshTable"
-                  @closeDialog="closeFormDialog"/>
+                  @closeDialog="closeFormDialog" />
     </div>
-   
+
 
 
 
@@ -128,7 +130,7 @@
 
         public add(): void {
             const This = this as any;
-            This.sysGroup = { ID: 0, GroupName: "", Remark:""};
+            This.sysGroup = { ID: 0, GroupName: "", Remark: "" };
             This.dialogVisible = true
 
         };

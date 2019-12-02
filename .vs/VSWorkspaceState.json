@@ -1,6 +1,16 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\public",
+    "\\src",
+    "\\src\\services",
+    "\\src\\services\\Sys",
+    "\\src\\views",
+    "\\src\\views\\sys",
+    "\\src\\views\\sys\\sysGroup",
+    "\\src\\views\\sys\\sysMenu",
+    "\\src\\views\\sys\\sysUser"
   ],
+  "SelectedNode": "\\.env.development",
   "PreviewInSolutionExplorer": false
 }

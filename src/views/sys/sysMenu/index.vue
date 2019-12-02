@@ -3,12 +3,16 @@
         <myTable>
             <div slot="headerForm" ref="tb_header">
                 <el-form ref="searcheForm" :model="searcheForm" class="demo-form-inline el-form--inline">
-                    <el-row>
-                        <el-col :span="24" style="padding-bottom:10px;text-align:right">
-                            <el-button type="primary" @click="add" plain>新增</el-button>
-                            <el-button type="primary" @click="sortMenu" plain>排序</el-button>
-                        </el-col>
-                       
+                    <el-row style="text-align:right">
+                        <el-form-item>
+                            <el-button icon="el-icon-circle-plus" type="primary" @click="add" size="mini" plain>新增</el-button>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" icon="el-icon-sort" @click="sortMenu" size="mini" plain>排序</el-button>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" icon="el-icon-search" @click="handleSearchFormSubmit" size="mini" plain>查询</el-button>
+                        </el-form-item>
                     </el-row>
                 </el-form>
             </div>
@@ -41,16 +45,14 @@
 
 
 
-        </div>-->
+            </div>-->
         </myTable>
 
-        <setMenuSort 
-                  :dialogSrotVisible="dialogSrotVisible"
-                  @refreshTable="refreshTable"
-                   @closeDialog="closeDialog"
-                 />
+        <setMenuSort :dialogSrotVisible="dialogSrotVisible"
+                     @refreshTable="refreshTable"
+                     @closeDialog="closeDialog" />
     </div>
-   
+
 
 
 
