@@ -81,32 +81,32 @@
         public edit(row: any): void {
             const This = this as any;
             This.sysMenu = row;
-            This.dialogVisible = true
+            This.dialogVisible = true;
 
         };
 
         public add(): void {
             const This = this as any;
             This.sysMenu = { ID: 0 };
-            This.dialogVisible = true
+            This.dialogVisible = true;
 
         };
         //菜单排序是否显示
         private dialogSrotVisible: boolean = false;
         public sortMenu(): void {
             const This = this as any;
-            This.dialogSrotVisible = true
+            This.dialogSrotVisible = true;
 
         };
         public refreshTable(): void {
             const This = this as any;
-            This.dialogSrotVisible = false
+            This.dialogSrotVisible = false;
             This.getTableData();
         };
 
         public closeDialog(): void {
             const This = this as any;
-            This.dialogSrotVisible = false
+            This.dialogSrotVisible = false;
         };
 
         public getTableData(): void {
@@ -120,7 +120,7 @@
         // 创建后
         mounted() {
             const This = this as any;
-            this.getTableData()
+            this.getTableData();
         }
     }
 </script>

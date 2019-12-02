@@ -125,14 +125,14 @@
         public edit(row: any): void {
             const This = this as any;
             This.sysMessage = row;
-            This.dialogVisible = true
+            This.dialogVisible = true;
 
         };
 
         public add(): void {
             const This = this as any;
             This.sysMessage = { ID: 0};
-            This.dialogVisible = true
+            This.dialogVisible = true;
 
         };
         public getTableData(): void {
@@ -145,7 +145,7 @@
         };
         // 创建后
         mounted() {
-            this.getTableData()
+            this.getTableData();
         }
     }
 </script>

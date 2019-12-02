@@ -1,7 +1,6 @@
 import router from './router';
 import { Route } from 'vue-router';
-import { getToken } from './utils/auth';
-import { UserModule } from '@/store/modules/user';
+import { getToken, getLocalRouter } from '@/utils/auth';
 import { GlobalModule } from '@/store/modules/global';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
@@ -17,15 +16,17 @@ router.beforeEach((to: Route, from: Route, next: any) => {
         } else {
 
             if (!getRouter) {// 不加这个判断，路由会陷入死循环
-                if (!getObjArr('router')) {
-                    getRouter = UserModule.menuList;
-                    saveObjArr('router', getRouter); // 存储路由到localStorage
-                    routerGo(to, next);// 执行路由跳转方法
+                //if (!getObjArr('router')) {
+                //    getRouter = UserModule.menuList;
+                //    saveObjArr('router', getRouter); // 存储路由到localStorage
+                //    routerGo(to, next);// 执行路由跳转方法
 
-                } else {// 从localStorage拿到了路由
-                    getRouter = getObjArr('router');// 拿到路由
-                    routerGo(to, next);
-                }
+                //} else {// 从localStorage拿到了路由
+                //    getRouter = getObjArr('router');// 拿到路由
+                //    routerGo(to, next);
+                //}
+                getRouter = getLocalRouter();// 拿到路由
+                routerGo(to, next);
             } else {
                 next();
             }
@@ -45,19 +46,19 @@ router.beforeEach((to: Route, from: Route, next: any) => {
 const _import = require('@/router/_import_' + process.env.NODE_ENV)// 获取组件的方法
 import Layout from './views/layout/Layout.vue';
 
-const saveObjArr = (name: string, data: any[]) => { // localStorage 存储数组对象的方法
-    localStorage.setItem(name, JSON.stringify(data));
-};
+//const saveObjArr = (name: string, data: any[]) => { // localStorage 存储数组对象的方法
+//    localStorage.setItem(name, JSON.stringify(data));
+//};
 
-const getObjArr = (name: string | null) => { // localStorage 获取数组对象的方法
-    if (name) {
-        let text: string | null = window.localStorage.getItem(name);
-        if (text) {
-            return JSON.parse(text);
-        }
-    }
-    return null;
-};
+//const getObjArr = (name: string | null) => { // localStorage 获取数组对象的方法
+//    if (name) {
+//        let text: string | null = window.localStorage.getItem(name);
+//        if (text) {
+//            return JSON.parse(text);
+//        }
+//    }
+//    return null;
+//};
 
 
 const routerGo = (to: any, next: any) => {

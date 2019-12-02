@@ -124,14 +124,14 @@
         public edit(row: any): void {
             const This = this as any;
             This.sysGroup = row;
-            This.dialogVisible = true
+            This.dialogVisible = true;
 
         };
 
         public add(): void {
             const This = this as any;
             This.sysGroup = { ID: 0, GroupName: "", Remark: "" };
-            This.dialogVisible = true
+            This.dialogVisible = true;
 
         };
         public getTableData(): void {

@@ -1,5 +1,6 @@
 import { Module, VuexModule, getModule, MutationAction, Mutation, Action } from 'vuex-module-decorators';
 import store from '@/store';
+import { setLocalRouter } from '@/utils/auth'
 export interface IHeader {
     key: string,
     value: string,
@@ -18,10 +19,14 @@ class Global extends VuexModule implements IGlobal {
 
     @MutationAction({ mutate: ['routers'] })
     async setRouters(rs: any[]) {
+        setLocalRouter(rs); // 存储路由到localStorage
         return {
             routers: rs,
         };
     }
+
+
+
     //自定义请求Headers
     @Mutation
     setRequestHeaders(rHeaders: IHeader[]) {

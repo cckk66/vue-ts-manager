@@ -48,6 +48,12 @@ export default new Router({
                     meta: { title: '菜单管理', icon: 'table' },
                 },
                 {
+                    path: 'XTXX',
+                    name: '系统消息',
+                    component: () => import('./views/sys/sysMessage/index.vue'),
+                    meta: { title: '系统消息', icon: 'table' },
+                },
+                {
                     path: 'EJCD',
                     name: '二级菜单',
                     meta: { title: '二级菜单', icon: 'table' },
