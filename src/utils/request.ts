@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Message, MessageBox } from 'element-ui';
 import { GlobalModule, IHeader } from '@/store/modules/global';
-const baseURL = process.env.VUE_APP_API_URL;
+const baseURL = process.env.VUE_APP_URL + process.env.VUE_APP_API_URL;
 const service = axios.create({
     baseURL: baseURL,
     timeout: 5000,

@@ -97,17 +97,17 @@
             const This = this;
             this.$nextTick(() => {
                 if (This.$refs && Object.keys(This.$refs).length > 0) {
-
+                    debugger
 
                     let tbHeader: HTMLElement = This.$refs.tb_header as HTMLElement;
                     let tbFooter: HTMLElement = This.$refs.tb_footer as HTMLElement;
 
                     let tbHeaderOffsetHeight = 0;
                     let tbFooterOffsetHeight = 0;
-                    if (tbHeader && tbHeader.hasOwnProperty("offsetHeight")) {
+                    if (tbHeader && tbHeader.offsetHeight) {
                         tbHeaderOffsetHeight = tbHeader.offsetHeight;
                     }
-                    if (tbFooter && tbFooter.hasOwnProperty("offsetHeight")) {
+                    if (tbFooter && tbFooter.offsetHeight) {
                         tbFooterOffsetHeight = tbFooter.offsetHeight;
                     }
                     const IntervalHeight = 80;// 间隔高度

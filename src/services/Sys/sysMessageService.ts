@@ -28,4 +28,11 @@ export const getsysMessagePage = (queryCondition: any) => {
         data: queryCondition,
     })
 }
+// 获取表单
+export const getNewSysMessageCount = () => {
+    return request({
+        url: '/sysMessage/getNewSysMessageCount',
+        method: 'get',
+    })
+}
 

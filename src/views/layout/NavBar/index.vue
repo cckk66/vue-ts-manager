@@ -1,25 +1,39 @@
 <template>
-  <div class="navbar" mode="horizontal">
-    <Hamburger
-      class="hamburger-container"
-      :toggle-click="toggleSideBar"
-      :is-active="sidebar.opened"
-    />
-    <Breadcrumb />
-    <el-dropdown class="avatar-container" trigger="click">
-      <div class="avatar-wrapper">
-        <i class="el-icon-caret-bottom"></i>
-      </div>
-      <el-dropdown-menu slot="dropdown" class="user-dropdown">
-        <router-link class="inlineBlock" to="/">
-          <el-dropdown-item>Home</el-dropdown-item>
-        </router-link>
-        <el-dropdown-item divided>
-          <span style="display:block;" @click="logout">LogOut</span>
-        </el-dropdown-item>
-      </el-dropdown-menu>
-    </el-dropdown>
-  </div>
+    <div class="navbar" mode="horizontal">
+        <Hamburger class="hamburger-container"
+                   :toggle-click="toggleSideBar"
+                   :is-active="sidebar.opened" />
+        <Breadcrumb />
+        <span class="toolbar">
+            <el-menu class="el-menu-demo" :background-color="themeColor" :text-color="themeColor" :active-text-color="themeColor" mode="horizontal">
+                <el-menu-item index="1" v-popover:popover-notice>
+                    <!-- ϵͳ֪ͨ -->
+                    <el-badge :value="4" :max="99" class="badge" type="success">
+                        <li style="color:#fff;" class="fa fa-bell-o fa-lg"></li>
+                    </el-badge>
+                    <el-popover ref="popover-notice" placement="bottom-end" trigger="click">
+                        <notice-panel></notice-panel>
+                    </el-popover>
+                </el-menu-item>
+
+                <el-menu-item index="2" v-popover:popover-personal>
+                    <el-dropdown class="avatar-container" trigger="click">
+                        <div class="avatar-wrapper">
+                            <i class="el-icon-caret-bottom"></i>
+                        </div>
+                        <el-dropdown-menu slot="dropdown" class="user-dropdown">
+                            <router-link class="inlineBlock" to="/">
+                                <el-dropdown-item>Home</el-dropdown-item>
+                            </router-link>
+                            <el-dropdown-item divided>
+                                <span style="display:block;" @click="logout">LogOut</span>
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                </el-menu-item>
+            </el-menu>
+        </span>
+    </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
@@ -88,4 +102,15 @@ export default class NavBar extends Vue {
     }
   }
 }
+    .toolbar {
+        float: right;
+    }
+    .el-menu--horizontal > .el-menu-item {
+        float: left;
+        height: 46px !important;
+        line-height: 46px !important;
+        margin: 0;
+        border-bottom: 2px solid transparent;
+        color: #909399;
+    }
 </style>

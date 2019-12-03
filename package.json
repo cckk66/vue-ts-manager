@@ -9,6 +9,7 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "@aspnet/signalr": "^1.1.4",
     "@tinymce/tinymce-vue": "^3.0.1",
     "@types/tinymce": "^4.5.23",
     "axios": "^0.18.0",
