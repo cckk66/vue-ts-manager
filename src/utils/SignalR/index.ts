@@ -33,7 +33,6 @@ export class MySignalR {
             .withUrl(this.url)
             .build();
         this.hubConnectionBuilder.start().then((data: any) => {
-            debugger
             //函数渲染
             {
                 //接收函数

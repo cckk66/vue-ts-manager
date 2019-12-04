@@ -1,8 +1,9 @@
-import { Module, VuexModule, getModule, MutationAction } from 'vuex-module-decorators';
+import { Module, VuexModule, getModule, MutationAction, Action} from 'vuex-module-decorators';
 import store from '@/store';
 import { login, logout } from '@/services/login';
-import { setToken, removeToken, getToken } from '@/utils/auth';
-
+import { setToken, removeToken, getToken, setLocalStorage, removeLocalStorage, getLocalStorage } from '@/utils/auth';
+import { localStorageUserInfoKey } from '@/utils/constKey';
+import { debug } from 'util';
 export interface IUserState {
     token: string;
     loginName: string;
@@ -24,6 +25,11 @@ class User extends VuexModule implements IUserState {
         const username = userInfo.username.trim();
         const data: any = await login(username, userInfo.password);
         setToken(data.token);
+        setLocalStorage(localStorageUserInfoKey, {
+            loginName: data.loginName,
+            niceName: data.niceName,
+            userID: data.ID,
+        })
         return {
             token: data.token,
             loginName: data.loginName,
@@ -33,13 +39,17 @@ class User extends VuexModule implements IUserState {
         };
     }
 
-
-
+    @Action
+    async GetUserInfo() {
+        let userInfo = getLocalStorage(localStorageUserInfoKey);
+        return userInfo;
+    }
 
     @MutationAction({ mutate: ['token', 'loginName', 'niceName', 'userID', 'menuList'] })
     async Logout() {
         await logout;
         removeToken();
+        removeLocalStorage(localStorageUserInfoKey);
         return {
             token: '',
             loginName: '',
@@ -52,6 +62,7 @@ class User extends VuexModule implements IUserState {
     @MutationAction({ mutate: ['token', 'loginName', 'niceName', 'userID', 'menuList'] })
     async FedLogout() {
         removeToken();
+        removeLocalStorage(localStorageUserInfoKey);
         return {
             token: '',
             loginName: '',

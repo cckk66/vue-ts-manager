@@ -1,7 +1,8 @@
 import router from './router';
 import { Route } from 'vue-router';
-import { getToken, getLocalRouter } from '@/utils/auth';
+import { getToken, getLocalRouter, setLocalRouter } from '@/utils/auth';
 import { GlobalModule } from '@/store/modules/global';
+import { UserModule } from '@/store/modules/user';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 
@@ -25,7 +26,14 @@ router.beforeEach((to: Route, from: Route, next: any) => {
                 //    getRouter = getObjArr('router');// 拿到路由
                 //    routerGo(to, next);
                 //}
-                getRouter = getLocalRouter();// 拿到路由
+                let localRouter = getLocalRouter();
+                if (!localRouter || localRouter.length <= 0) {
+                    getRouter = UserModule.menuList;
+                    setLocalRouter(getRouter)
+
+                } else {// 从localStorage拿到了路由
+                    getRouter = localRouter;// 拿到路由
+                }
                 routerGo(to, next);
             } else {
                 next();

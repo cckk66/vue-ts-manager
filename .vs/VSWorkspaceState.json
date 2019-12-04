@@ -1,7 +1,12 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\src",
+    "\\src\\services",
+    "\\src\\services\\Sys",
+    "\\src\\views",
+    "\\src\\views\\home"
   ],
-  "SelectedNode": "\\package.json",
+  "SelectedNode": "\\public",
   "PreviewInSolutionExplorer": false
 }

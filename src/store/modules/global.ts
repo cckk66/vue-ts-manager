@@ -9,6 +9,7 @@ export interface IHeader {
 export interface IGlobal {
     routers: any[],
     requestHeaders: IHeader[],
+    newMessageCount: number
 }
 
 @Module({ dynamic: true, store, name: 'global' })
@@ -16,6 +17,9 @@ class Global extends VuexModule implements IGlobal {
     public routers: any[] = [];
     //自定义提交Headers
     public requestHeaders: IHeader[] = [];
+
+    //系统最新消息
+    public newMessageCount: number = 0;
 
     @MutationAction({ mutate: ['routers'] })
     async setRouters(rs: any[]) {
@@ -25,6 +29,12 @@ class Global extends VuexModule implements IGlobal {
         };
     }
 
+    @MutationAction({ mutate: ['newMessageCount'] })
+    async setNewMessageCount(newMessageCount: number) {
+        return {
+            newMessageCount: newMessageCount,
+        };
+    }
 
 
     //自定义请求Headers

@@ -97,7 +97,6 @@
             const This = this;
             this.$nextTick(() => {
                 if (This.$refs && Object.keys(This.$refs).length > 0) {
-                    debugger
 
                     let tbHeader: HTMLElement = This.$refs.tb_header as HTMLElement;
                     let tbFooter: HTMLElement = This.$refs.tb_footer as HTMLElement;

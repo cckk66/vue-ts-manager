@@ -15,12 +15,16 @@ export function removeToken() {
 };
 
 
-export const setLocalStorage = (name: string, data: any[]) => { // localStorage 存储数组对象的方法
-    localStorage.setItem(name, JSON.stringify(data));
+export const setLocalStorage = (name: string, data: any) => { // localStorage 存储数组对象的方法
+    
+    sessionStorage.setItem(name, JSON.stringify(data));
+  
 };
-
+export const removeLocalStorage= (key: string) => {
+    sessionStorage.removeItem(key)
+}
 export const getLocalStorage = (name: string) => {
-    let lsjson: string | null = localStorage.getItem(name);
+    let lsjson: string | null = sessionStorage.getItem(name);
     if (lsjson) {
         return JSON.parse(lsjson);
     }
