@@ -6,8 +6,14 @@
         <Breadcrumb />
         <el-menu class="el-menu-demo" mode="horizontal" style="float:right">
             <el-menu-item index="1">
-                <i class="el-icon-bell"></i>
-                <span id="badge" v-show="newMessageCount>0">{{newMessageCount}}</span>
+
+
+                <el-badge v-show="newMessageCount>0" :value="newMessageCount" class="item">
+                    <i class="el-icon-bell"></i>
+                </el-badge>
+
+
+
             </el-menu-item>
             <el-menu-item index="2">
                 <div class="user-info">
@@ -15,6 +21,7 @@
                 </div>
             </el-menu-item>
         </el-menu>
+
         <!--<el-row :gutter="20" style="float:right">
             <el-col :span="5">
                 <i class="el-icon-bell"></i>
@@ -63,9 +70,17 @@
             return AppModule.sidebar;
         }
         get newMessageCount() {
+
             return GlobalModule.newMessageCount;
         }
         private userHead: string = require("@/assets/userhead.png");
+
+        private dialogVisible: boolean = false;
+        //弹窗请求测试总耗时
+        private count: number = 0
+        // //弹窗请求测试剩余耗时
+        private specificNumbe: number = 0
+
         toggleSideBar() {
             AppModule.ToggleSideBar(false);
         }
@@ -88,7 +103,7 @@
         private signalTest(): void {
             const This = this as any;
             //发送
-            debugger
+
             This.mySignalR.send("SendClientByUser", UserModule.userID, UserModule.userID, { title: '111', content: '11111' })
                 .then(() => {
                     alert(111)
@@ -97,9 +112,9 @@
         }
         // 创建后
         mounted() {
-            debugger
+
             UserModule.GetUserInfo().then((userInfo) => {
-                debugger
+
                 if (userInfo && userInfo.userID > 0) {
                     const baseURL = process.env.VUE_APP_URL;
                     const This = this as any;
@@ -113,6 +128,16 @@
                     This.mySignalR.on("userMessageReceived", (title: string, content: string) => {
                         this.$message('您有新消息了');
                         this.setNewMessageCount();
+                    });
+                    This.mySignalR.on("testOpen", (count: number, specificNumbe: number) => {
+                        //this.$message('开始弹窗测试了');
+                        this.count = count;
+                        this.specificNumbe = specificNumbe;
+                        if (this.specificNumbe > 0) {
+                            this.dialogVisible = true;
+                        } else {
+                            this.dialogVisible = false;
+                        }
                     });
 
                     This.mySignalR.start().then(() => {
@@ -129,7 +154,14 @@
         }
     }
 </script>
-
+<!--<style>
+    .el-badge__content {
+        padding: 10px 0px 6px 6px !important;
+        margin-top: 12px;
+        height: 0px !important;
+        line-height: 0px !important;
+    }
+</style>-->
 <style lang="less">
     .navbar {
         height: 50px;
@@ -181,6 +213,9 @@
     }
     }
     }
+    .el-badge__content.is-fixed {
+        top: 12px !important;
+    }
 </style>
 <style scoped lang="scss">
     .el-menu--horizontal > .el-menu-item {
@@ -190,6 +225,7 @@
         margin: 0;
         border-bottom: 2px solid transparent;
         color: #909399;
+        padding: 0px 30px 0px 0px;
     }
 
 
@@ -215,19 +251,6 @@
         font-size: 30px;
         vertical-align: middle;
     }
+  
 
-    #badge {
-        width: 20px;
-        height: 20px;
-        line-height: 20px; /* 数值与height相同，使数字垂直居中 */
-        text-align: center;
-        background-color: red;
-        color: white;
-        font-size: 12px;
-        font-weight: 700;
-        border-radius: 50%;
-        position: relative;
-        left: -4px;
-        top: -8px;
-    }
 </style>

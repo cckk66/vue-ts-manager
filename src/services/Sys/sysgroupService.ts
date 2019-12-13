@@ -29,3 +29,11 @@ export const getSysGroupPage = (queryCondition: any) => {
     })
 }
 
+
+// 获取表单
+export const getGroupMenuDto = (GroupID: number) => {
+    return request({
+        url: '/sysGroup/GetGroupMenuDto?GroupID=' + GroupID,
+        method: 'get',
+    })
+}

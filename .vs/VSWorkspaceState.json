@@ -4,9 +4,13 @@
     "\\src",
     "\\src\\services",
     "\\src\\services\\Sys",
+    "\\src\\utils",
     "\\src\\views",
-    "\\src\\views\\home"
+    "\\src\\views\\home",
+    "\\src\\views\\sys",
+    "\\src\\views\\sys\\sysMenu",
+    "\\src\\views\\sys\\sysMessage"
   ],
-  "SelectedNode": "\\public",
+  "SelectedNode": "\\src\\utils\\vueExtend.ts",
   "PreviewInSolutionExplorer": false
 }

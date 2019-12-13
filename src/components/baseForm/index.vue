@@ -145,6 +145,7 @@
         // 关闭表单
         public close() {
             this.Reset();
+            this.$emit("closeDialog");//通知列表页面关闭弹窗
         }
         public closeDialog(): void {
             this.close();

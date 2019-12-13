@@ -25,10 +25,10 @@
                         </el-form-item>
                     </el-row>
                     <!--<el-row>
-                        <el-col :span="24" style="padding-bottom:10px;text-align:right">
-                            <el-button type="primary" icon="el-icon-refresh" @click="refresh" size="mini" plain>刷新</el-button>
-                        </el-col>
-                    </el-row>-->
+                    <el-col :span="24" style="padding-bottom:10px;text-align:right">
+                        <el-button type="primary" icon="el-icon-refresh" @click="refresh" size="mini" plain>刷新</el-button>
+                    </el-col>
+                </el-row>-->
                 </el-form>
 
 
@@ -73,10 +73,14 @@
                     </el-table-column>
                     <el-table-column fixed="right"
                                      label="操作"
-                                     width="100">
+                                     width="120">
                         <template slot-scope="scope">
                             <el-button @click="edit(scope.row)" type="text" size="small">编辑</el-button>
+                            <el-button @click="setPower(scope.row)" type="text" size="small">授权</el-button>
                         </template>
+
+
+
                     </el-table-column>
                 </el-table>
             </div>
@@ -95,6 +99,11 @@
                   :dialogVisible="dialogVisible"
                   @refreshTable="refreshTable"
                   @closeDialog="closeFormDialog" />
+
+        <groupMenuPower :sysGroup="sysGroup"
+                  :dialogPowerVisible="dialogPowerVisible"
+                 />
+        
     </div>
 
 
@@ -105,14 +114,15 @@
     import baseTable from '@/components/baseTable/index.vue'
     import myTable from '@/components/baseTable/myTable.vue'
     import editForm from "./editForm.vue";
+    import groupMenuPower from "./groupMenuPower.vue";
     import { Component, Vue } from 'vue-property-decorator';
     import { getSysGroupPage } from '@/services/Sys/sysgroupService';
     @Component({
         components: {
-            myTable, editForm
+            myTable, editForm, groupMenuPower
         }
     })
-    export default class sysGroupTable extends baseTable {
+    export default class sysGroup extends baseTable {
         //单个分组
         private sysGroup: any = {};
         // 查询条件
@@ -134,6 +144,15 @@
             This.dialogVisible = true;
 
         };
+        private dialogPowerVisible: boolean = false;
+        public setPower(row: any): void {
+            const This = this as any;
+            This.sysGroup = row;
+            This.dialogPowerVisible = true;
+
+        };
+
+
         public getTableData(): void {
             const This = this as any;
 

@@ -1,7 +1,7 @@
 
 <template>
     <el-dialog :title="dialogTitle"
-               :visible.sync="dialogVisible"
+               :visible="dialogVisible"
                width="500px"
                @open="dialogOpen"
                v-loading="dialogLoding"

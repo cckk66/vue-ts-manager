@@ -2,7 +2,7 @@
 <template>
     <el-dialog title="设置菜单排序"
 
-               :visible.sync="dialogSrotVisible"
+               :visible="dialogSrotVisible"
                width="500px"
                @open="dialogOpen"
                v-loading="dialogLoding"
