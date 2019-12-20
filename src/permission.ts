@@ -72,6 +72,10 @@ import Layout from './views/layout/Layout.vue';
 const routerGo = (to: any, next: any) => {
     getRouter = filterAsyncRouter(getRouter); // 过滤路由
     GlobalModule.setRouters(getRouter);// 设置全局路由
+    //{
+    //    getRouter.push({ path: "*", redirect: "/404", hidden: true })
+    //    getRouter.push({ path: "/404", component: () => import('./views/404.vue'), hidden: true })
+    //}
     router.addRoutes(getRouter); // 动态添加路由
     next({ ...to, replace: true });
 };

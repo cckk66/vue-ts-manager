@@ -1,4 +1,5 @@
 import request from '@/utils/request';
+import { stringify } from 'querystring';
 
 
 // 获取表单
@@ -35,5 +36,17 @@ export const getGroupMenuDto = (GroupID: number) => {
     return request({
         url: '/sysGroup/GetGroupMenuDto?GroupID=' + GroupID,
         method: 'get',
+    })
+}
+
+// 保存授权
+export const saveGroupMenuPower = (GroupID: number, queryCondition: any[]) => {
+    return request({
+        url: '/sysGroup/saveGroupMenuPower',
+        method: 'post',
+        data: {
+            GroupID: GroupID,
+            GroupMenuDtos: queryCondition,
+        }
     })
 }

@@ -1,11 +1,12 @@
 <template>
-  <div>
-    <svg-icon
+    <div>
+        <!--<svg-icon
       v-if="icon"
       :name="icon"
-    ></svg-icon>
-    <span v-if="title" slot="title">{{title}}</span>
-  </div>
+    ></svg-icon>-->
+        <i  v-if="icon" :class="icon"></i>
+        <span v-if="title" slot="title">{{title}}</span>
+    </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';

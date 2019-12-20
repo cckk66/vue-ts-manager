@@ -1,51 +1,43 @@
 <template>
     <el-dialog title="分组菜单授权"
                :visible="dialogPowerVisible"
-               width="500px"
                @open="dialogOpen"
                @close="close"
                :close-on-click-modal="closeOnClickModal">
-        <el-table :data="tableData"
-                  style="width: 100%;margin-bottom: 20px;"
-                  row-key="ID"
-                  border
-                  default-expand-all
-                  :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-            <el-table-column prop="date"
-                             label="ICON"
-                             sortable
-                             width="100">
-                <template slot-scope="scope">
-                    <i :class="scope.row.Icon"></i>
-                </template>
-            </el-table-column>
-            <el-table-column prop="Name"
-                             label="名称"
-                             sortable
-                             width="180">
-            </el-table-column>
-            <el-table-column label="操作">
-            </el-table-column>
-        </el-table>
+        <div style="height:500px;overflow-y:auto;padding:10px">
 
-
+            <el-tree :data="TreeData"
+                     show-checkbox
+                     ref="treeMp"
+                     node-key="nodeKey"
+                     :default-expanded-keys="expandedKeys"
+                      :default-checked-keys="checkdKeys"
+                     :expand-on-click-node="false">
+                <span class="custom-tree-node" slot-scope="{ node, data }">
+                    <span><i :class="data.Icon"></i>{{  node.label }}</span>
+                    <span style="padding-left:20px">
+                        <el-tag size="mini" v-if="data.GroupMenuType===1">菜单</el-tag>
+                        <el-tag size="mini" v-else type="success">按钮</el-tag>
+                    </span>
+                </span>
+            </el-tree>
+        </div>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="close">取 消</el-button>
+            <el-button type="primary" ref="submitBtn" @click="saveGroupMenuPower">确 定</el-button>
+        </div>
     </el-dialog>
-
-
-
 </template>
 <script lang="ts">
-    import baseTable from '@/components/baseTable/index.vue'
-    import myTable from '@/components/baseTable/myTable.vue'
     import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
-    import { getGroupMenuDto } from '@/services/Sys/sysgroupService';
+    import { getGroupMenuDto, saveGroupMenuPower } from '@/services/Sys/sysgroupService';
+    import { Tree } from 'element-ui';
     @Component({
         components: {
-            myTable
 
         }
     })
-    export default class groupMenuPower extends baseTable {
+    export default class groupMenuPower extends Vue {
         // 表单是否实现
         @Prop()
         public dialogPowerVisible: boolean = false;
@@ -63,19 +55,52 @@
 
         private dialogOpen(): void {
             const This = this as any;
-            this.getTableData();
+            this.getTreeData();
         }
-
-        public getTableData(): void {
+        private TreeData: any = [];
+        private expandedKeys: number[] = []
+        private checkdKeys: number[] = []
+        public getTreeData(): void {
             const This = this as any;
 
             getGroupMenuDto(This.sysGroup.ID).then((data: any) => {
-                This.tableData = data;
-                This.page.total = data.length;
+                This.TreeData = data.Item1;
+                This.expandedKeys = data.Item2;
+                debugger
+                This.checkdKeys = data.Item3;
             })
         };
-        private close(): void {
+        private saveGroupMenuPower(): void {
+            const This = this as any;
 
+            const treeMp = this.$refs.treeMp as Tree
+            let checkedNodes = treeMp.getCheckedNodes();
+            //let checkedKeys = treeMp.getCheckedKeys();
+            let saveNodes:any[] = [];
+            checkedNodes.forEach((item: any) => {
+                saveNodes.push({
+                    ID: item.ID,
+                    FatherID: item.FatherID,
+                    GroupMenuType: item.GroupMenuType
+                })
+            });
+            saveGroupMenuPower(This.sysGroup.ID, saveNodes).then((data: any) => {
+                const This = this as any;
+                if (data) {
+                    This.$successBox("授权成功");
+                
+                } else {
+                 
+                    This.$warningBox("授权失败，请稍后再试！");
+                }
+                This.close();
+            })
+            //console.log(checkedKeys);
+
+        }
+        private close(): void {
+            const parent = this.$parent as any;
+            parent.dialogPowerVisible = false
         }
         // 创建后
         mounted() {
