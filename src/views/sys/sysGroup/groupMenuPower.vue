@@ -99,6 +99,10 @@
 
         }
         private close(): void {
+            const This = this as any;
+            This.expandedKeys = []
+            This.checkdKeys = []
+
             const parent = this.$parent as any;
             parent.dialogPowerVisible = false
         }
