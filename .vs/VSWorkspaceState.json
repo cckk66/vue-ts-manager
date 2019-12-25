@@ -1,19 +1,15 @@
 {
   "ExpandedNodes": [
     "",
+    "\\public",
     "\\src",
     "\\src\\components",
-    "\\src\\icons",
-    "\\src\\icons\\svg",
+    "\\src\\services",
+    "\\src\\services\\Sys",
     "\\src\\views",
-    "\\src\\views\\home",
     "\\src\\views\\layout",
-    "\\src\\views\\layout\\NavBar",
-    "\\src\\views\\layout\\NavBar\\Breadcrumb",
-    "\\src\\views\\layout\\NavBar\\Hamburger",
     "\\src\\views\\layout\\Sidebar",
-    "\\src\\views\\sys"
+    "\\src\\views\\login"
   ],
-  "SelectedNode": "\\src\\views\\layout\\Sidebar\\MenuItem.vue",
   "PreviewInSolutionExplorer": false
 }

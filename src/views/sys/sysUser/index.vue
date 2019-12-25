@@ -16,8 +16,8 @@
                             </el-button>
                         </el-form-item>
                         <el-form-item>
-                            <el-button icon="el-icon-circle-plus" type="primary" 
-                                      size="mini" @click="add" plain>新增</el-button>
+                            <el-button icon="el-icon-circle-plus" type="primary"
+                                       size="mini" @click="add" plain>新增</el-button>
                         </el-form-item>
                         <el-form-item>
                             <el-button icon="el-icon-refresh" size="small" @click="handleSearchFormReset">
@@ -26,26 +26,26 @@
                         </el-form-item>
                     </el-row>
                     <!--<el-row>
-                        <el-col :span="24" style="padding-bottom:10px;text-align:right">
-                            <el-button type="primary" icon="el-icon-refresh" @click="refresh" size="mini" plain>刷新</el-button>
-                        </el-col>
-                    </el-row>-->
+                    <el-col :span="24" style="padding-bottom:10px;text-align:right">
+                        <el-button type="primary" icon="el-icon-refresh" @click="refresh" size="mini" plain>刷新</el-button>
+                    </el-col>
+                </el-row>-->
                 </el-form>
-                
+
 
             </div>
             <div slot="mainTable" ref="tb_main">
                 <el-table :data="tableData" ref="mytable" :height="tableHeight">
                     <el-table-column label="名称" prop="LoginName" sortable="custom">
-                     
+
                     </el-table-column>
 
                     <el-table-column label="昵称" prop="NiceName" sortable="custom" :show-overflow-tooltip="true">
-                    
+
                     </el-table-column>
 
                     <el-table-column label="联系电话" prop="ContractPhone" sortable="custom" :show-overflow-tooltip="true">
-                      
+
                     </el-table-column>
 
 
@@ -78,6 +78,7 @@
                                      width="100">
                         <template slot-scope="scope">
                             <el-button @click="edit(scope.row)" type="text" size="small">编辑</el-button>
+                            <el-button @click="showMc(scope.row)" type="text" size="small">密保</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -93,11 +94,14 @@
 
             </div>
         </myTable>
-        <editForm 
-                  :sysUser="sysUser" 
+        <editForm :sysUser="sysUser"
                   :dialogVisible="dialogVisible"
                   @refreshTable="refreshTable"
-                  @closeDialog="closeFormDialog"/>
+                  @closeDialog="closeFormDialog" />
+
+        <matrixCard :sysUser="sysUser"
+                  :dialogMcVisible="dialogMcVisible"
+                   />
     </div>
    
 
@@ -107,12 +111,14 @@
 <script lang="ts">
     import baseTable from '@/components/baseTable/index.vue'
     import myTable from '@/components/baseTable/myTable.vue'
+
     import editForm from "./editForm.vue";
+    import matrixCard from "./matrixCard.vue";
     import { Component, Vue } from 'vue-property-decorator';
     import { getsysUserPage } from '@/services/Sys/sysUserService';
     @Component({
         components: {
-            myTable, editForm
+            myTable, editForm, matrixCard
         }
     })
     export default class sysUserTable extends baseTable {
@@ -123,7 +129,8 @@
             GroupName: '',
             Remark: '',
         }
-
+        //密保显示
+        private dialogMcVisible: boolean = false;
         public edit(row: any): void {
             const This = this as any;
             This.sysUser = row;
@@ -135,6 +142,12 @@
             const This = this as any;
             This.sysUser = { ID: 0};
             This.dialogVisible = true;
+
+        };
+        public showMc(row: any): void {
+            const This = this as any;
+            This.sysUser = row;
+            This.dialogMcVisible = true;
 
         };
         public getTableData(): void {

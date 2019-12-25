@@ -29,3 +29,11 @@ export const getsysUserPage = (queryCondition: any) => {
     })
 }
 
+
+//保持分组
+export const getMatrixCard = (userID: number) => {
+    return request({
+        url: '/sysUser/getMatrixCard?userID=' + userID,
+        method: 'get',
+    })
+}

@@ -86,6 +86,7 @@ export default class Login extends Vue {
     this.redirect = route.query && route.query.redirect as string;
   }
 
+    
   togglePwd() {
     if (this.pwdType === 'password') {
       this.pwdType = 'text';
